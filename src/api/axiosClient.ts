@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://expense-tracker-api-yhj7.onrender.com/';
+// Use environment variable or fallback to production URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://expense-tracker-api-yhj7.onrender.com';
 
 // Create axios instance with default config
 const axiosClient = axios.create({
