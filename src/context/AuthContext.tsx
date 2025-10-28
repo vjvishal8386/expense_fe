@@ -39,19 +39,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('Attempting login with:', { email, apiUrl: axiosClient.defaults.baseURL });
+      
       const response = await axiosClient.post('/auth/login', {
         email,
         password,
       });
       
+      console.log('Login response:', response.data);
+      
       const { access_token, user } = response.data;
+      
+      if (!access_token || !user) {
+        throw new Error('Invalid response from server');
+      }
       
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
+      
+      console.log('Login successful, user:', user);
     } catch (error: any) {
-      console.error('Login error:', error);
-      throw new Error(error.response?.data?.detail || 'Login failed');
+      console.error('Login error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url,
+      });
+      
+      // Better error messages
+      if (error.response?.status === 401) {
+        throw new Error('Invalid email or password');
+      } else if (error.response?.status === 404) {
+        throw new Error('User not found. Please register first.');
+      } else if (error.response?.data?.detail) {
+        throw new Error(error.response.data.detail);
+      } else if (error.message === 'Network Error') {
+        throw new Error('Cannot connect to server. Please check if backend is running.');
+      } else {
+        throw new Error('Login failed. Please try again.');
+      }
     }
   };
 
@@ -70,16 +97,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         requestBody.name = name;
       }
 
+      console.log('Attempting registration with:', { email, name, apiUrl: axiosClient.defaults.baseURL });
+
       const response = await axiosClient.post('/auth/register', requestBody);
       
+      console.log('Registration response:', response.data);
+      
       const { access_token, user } = response.data;
+      
+      if (!access_token || !user) {
+        throw new Error('Invalid response from server');
+      }
       
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
+      
+      console.log('Registration successful, user:', user);
     } catch (error: any) {
-      console.error('Register error:', error);
-      throw new Error(error.response?.data?.detail || 'Registration failed');
+      console.error('Register error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url,
+      });
+      
+      // Better error messages
+      if (error.response?.status === 400) {
+        throw new Error(error.response.data.detail || 'Email already registered');
+      } else if (error.response?.data?.detail) {
+        throw new Error(error.response.data.detail);
+      } else if (error.message === 'Network Error') {
+        throw new Error('Cannot connect to server. Please check if backend is running.');
+      } else {
+        throw new Error('Registration failed. Please try again.');
+      }
     }
   };
 

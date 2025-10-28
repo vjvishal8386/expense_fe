@@ -29,12 +29,23 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Clear token and redirect to login
+git     // Only redirect on 401 if NOT on login/register endpoints
+    const isAuthEndpoint = error.config?.url?.includes('/auth/login') || 
+                           error.config?.url?.includes('/auth/register');
+    
+    if (error.response?.status === 401 && !isAuthEndpoint) {
+      // Token expired or invalid - clear storage and redirect to login
+      console.log('Session expired, redirecting to login...');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      
+      // Use React Router navigation instead of window.location
+      // to avoid full page refresh
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
+    
     return Promise.reject(error);
   }
 );
