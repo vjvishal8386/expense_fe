@@ -1,5 +1,5 @@
 import axiosClient from './axiosClient';
-import { Friend, Expense } from '../data/mockData';
+import { Friend, Expense, FriendInviteRequest, FriendInviteResponse } from '../data/mockData';
 
 // Friends API
 // Note: currentUserId is kept for API consistency but not used - backend infers user from JWT token
@@ -10,6 +10,12 @@ export const fetchFriends = async (_currentUserId: string): Promise<Friend[]> =>
 
 export const addFriend = async (email: string, name: string): Promise<Friend> => {
   const response = await axiosClient.post('/friends', { email, name });
+  return response.data;
+};
+
+// Invite friend by email - handles both existing and new users
+export const inviteFriend = async (data: FriendInviteRequest): Promise<FriendInviteResponse> => {
+  const response = await axiosClient.post<FriendInviteResponse>('/friends/invite', data);
   return response.data;
 };
 

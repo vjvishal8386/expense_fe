@@ -29,7 +29,7 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-git     // Only redirect on 401 if NOT on login/register endpoints
+    // Only redirect on 401 if NOT on login/register endpoints
     const isAuthEndpoint = error.config?.url?.includes('/auth/login') || 
                            error.config?.url?.includes('/auth/register');
     

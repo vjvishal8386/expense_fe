@@ -6,19 +6,27 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setEmailNotVerified(false);
     setLoading(true);
 
     try {
       await login(email, password);
       // Navigation will be handled automatically by ProtectedRoute
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please try again.');
+      const errorMessage = err.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      
+      // Check if error is about email verification (403 status)
+      if (errorMessage.toLowerCase().includes('verify') || errorMessage.toLowerCase().includes('verification')) {
+        setEmailNotVerified(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -39,7 +47,16 @@ const Login = () => {
         <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" onSubmit={handleSubmit}>
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
+              <p>{error}</p>
+              {emailNotVerified && (
+                <p className="mt-2 text-sm">
+                  Please check your email for the OTP code or{' '}
+                  <Link to="/register" className="font-medium underline hover:text-red-800">
+                    register again
+                  </Link>
+                  .
+                </p>
+              )}
             </div>
           )}
           
