@@ -18,7 +18,7 @@ const Navbar = () => {
             className="text-xl font-bold text-gray-900 cursor-pointer" 
             onClick={() => navigate('/dashboard')}
           >
-            💰 Expense Tracker
+            💰 Spend Book
           </div>
           
           <div className="flex items-center gap-4">
