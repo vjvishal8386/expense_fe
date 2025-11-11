@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 interface PDFDownloadModalProps {
   isOpen: boolean;
   onClose: () => void;
