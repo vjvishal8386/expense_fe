@@ -4,6 +4,7 @@ import FriendList from '../components/FriendList';
 import { Friend } from '../data/mockData';
 import { fetchFriends, inviteFriend } from '../api/mockAPI';
 import { useAuth } from '../context/AuthContext';
+import SEO from '../components/SEO';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -85,8 +86,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
+    <>
+      <SEO
+        title="Dashboard - Spend Book | Manage Your Friends & Expenses"
+        description="View your friends list, track shared expenses, and manage balances. Your Spend Book dashboard for expense management."
+        keywords="dashboard, expense dashboard, friends list, expense management, spend book dashboard"
+        url={window.location.href}
+      />
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">My Friends</h1>
@@ -167,6 +175,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

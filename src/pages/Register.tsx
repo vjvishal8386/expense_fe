@@ -1,6 +1,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Register = () => {
   // Get invitation token from URL
@@ -130,7 +131,14 @@ const Register = () => {
   // Registration Form (Step 1)
   if (step === 'register') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+      <>
+        <SEO
+          title="Sign Up - Spend Book | Create Free Account"
+          description="Create a free Spend Book account to start tracking shared expenses with friends. Easy registration with email verification."
+          keywords="sign up, register, create account, expense tracker signup, free expense tracker"
+          url={window.location.href}
+        />
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
         <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="text-3xl font-bold text-center text-gray-900">
@@ -250,12 +258,20 @@ const Register = () => {
           </form>
         </div>
       </div>
+      </>
     );
   }
 
   // OTP Verification Form (Step 2)
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+    <>
+      <SEO
+        title="Verify Email - Spend Book | OTP Verification"
+        description="Verify your email address with the 6-digit OTP code sent to your inbox. Complete your Spend Book registration."
+        keywords="email verification, OTP verification, verify account, spend book verification"
+        url={window.location.href}
+      />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="text-3xl font-bold text-center text-gray-900">
@@ -337,6 +353,7 @@ const Register = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

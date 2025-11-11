@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
+import InstallButton from './components/InstallButton';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -59,6 +60,7 @@ function App() {
     <AuthProvider>
       <Router>
         <AppRoutes />
+        <InstallButton />
       </Router>
     </AuthProvider>
   );

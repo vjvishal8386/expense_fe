@@ -1,0 +1,19 @@
+# robots.txt for Spend Book
+
+User-agent: *
+Allow: /
+
+# Disallow private routes
+Disallow: /dashboard
+Disallow: /chat/
+
+# Allow public pages
+Allow: /login
+Allow: /register
+
+# Sitemap
+Sitemap: https://spendbook.app/sitemap.xml
+
+# Crawl-delay (optional)
+Crawl-delay: 1
+

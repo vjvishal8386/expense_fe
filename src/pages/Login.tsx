@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -33,7 +34,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+    <>
+      <SEO
+        title="Login - Spend Book | Sign In to Track Expenses"
+        description="Sign in to Spend Book to track and manage shared expenses with your friends. Access your dashboard and expense history."
+        keywords="login, sign in, expense tracker login, spend book login"
+        url={window.location.href}
+      />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="text-3xl font-bold text-center text-gray-900">
@@ -118,6 +126,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 
