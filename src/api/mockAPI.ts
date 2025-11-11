@@ -57,3 +57,43 @@ export const calculateBalance = (expenses: Expense[], currentUserId: string): nu
     }
   }, 0);
 };
+
+// Download expense report as PDF
+export const downloadExpensePDF = async (friendId: string): Promise<void> => {
+  try {
+    const response = await axiosClient.get(`/expenses/${friendId}/pdf`, {
+      responseType: 'blob', // Important for binary data (PDF)
+    });
+
+    // Get filename from Content-Disposition header or generate one
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = `expense-report-${friendId}.pdf`;
+    
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+      if (filenameMatch && filenameMatch[1]) {
+        filename = filenameMatch[1].replace(/['"]/g, '');
+      }
+    }
+
+    // Create blob from response data
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    
+    // Create download link
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    
+    // Cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error: any) {
+    console.error('Error downloading PDF:', error);
+    throw new Error(error.response?.data?.detail || 'Failed to download PDF report');
+  }
+};
